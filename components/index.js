@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Authentication from "./Authentication ";
-import Form from "./Form";
+import FormComp from "./Form";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "../firebase";
 
 const BlogComponent = () => {
   return (
     <div>
-      {/*<Form />*/}
-      <Authentication />
+      <FormComp />
+      {/*<Authentication />*/}
     </div>
   );
 };
