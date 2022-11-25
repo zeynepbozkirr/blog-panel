@@ -1,25 +1,16 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Center,
-  Container,
-  Input,
-  Square,
-  Wrap,
-} from "@chakra-ui/react";
+import { Button, Center, Input, Wrap } from "@chakra-ui/react";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { Flex, Spacer } from "@chakra-ui/react";
+import { auth } from "../firebase";
 
 const Authentication = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [log, setLog] = useState();
 
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(auth, email, password);
       console.log(user);
-      setLog(user);
     } catch (error) {
       console.log(error.message);
     }

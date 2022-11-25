@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Authentication from "./Authentication ";
-import FormComp from "./Form";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase";
+import FormComp from "./Form/Form";
+import { auth } from "../firebase";
 
 const BlogComponent = () => {
-  return (
-    <div>
-      <FormComp />
-      {/*<Authentication />*/}
-    </div>
-  );
+  const [user, setUser] = useState(() => {
+    const user = auth.currentUser;
+    return user;
+  });
+  useEffect(() => {
+    auth.onAuthStateChanged((firebaseUser) => {
+      setUser(firebaseUser);
+    });
+  }, []);
+  return <div>{user ? <FormComp /> : <Authentication />}</div>;
 };
 
 export default BlogComponent;
