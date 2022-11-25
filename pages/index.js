@@ -4,7 +4,7 @@ import styles from "../styles/Home.module.css";
 import BlogComponent from "../components";
 import Drawer from "../components/Drawer";
 import { useEffect, useState } from "react";
-import { auth } from "../firebase";
+import { auth } from "../config/config";
 
 export default function Home() {
   return (

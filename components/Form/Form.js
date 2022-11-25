@@ -1,26 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Input, Textarea } from "@chakra-ui/react";
 import { Formik } from "formik";
-import { Select } from "antd";
-import { db } from "../../firebase";
-import { query, collection, addDoc, onSnapshot } from "firebase/firestore";
+import { db } from "../../config/config";
+import { collection, addDoc } from "firebase/firestore";
 import styles from "../blog.module.css";
+import { useCollection } from "../../Hooks/useCollection";
 
 const FormComp = () => {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    const q = query(collection(db, "Posts"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let posts = [];
-      querySnapshot.forEach((doc) => {
-        posts.push({ ...doc.data(), id: doc.id });
-      });
-      setPosts(posts);
-      console.log(posts, "mmm");
-    });
-    return () => unsubscribe();
-  }, []);
+  const { documents: Posts } = useCollection("Posts");
 
   const addPost = async (val) => {
     const ref = collection(db, "Posts");
@@ -39,7 +26,6 @@ const FormComp = () => {
           initialValues={{ title: "", date: "", text: "", category: [] }}
           onSubmit={(values) => {
             addPost(values);
-            resetForm({});
           }}
         >
           {({

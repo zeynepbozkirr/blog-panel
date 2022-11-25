@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Center, Input, Wrap } from "@chakra-ui/react";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../config/config";
 
 const Authentication = () => {
   const [email, setEmail] = useState();
