@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Input, Textarea } from "@chakra-ui/react";
 import { Formik } from "formik";
 import { db } from "../../config/config";
-import { collection, addDoc } from "firebase/firestore";
+import firebase from "firebase/app";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import styles from "../blog.module.css";
 import { useCollection } from "../../Hooks/useCollection";
 
@@ -13,7 +14,7 @@ const FormComp = () => {
     const ref = collection(db, "Posts");
     await addDoc(ref, {
       Title: val.title,
-      Date: val.date,
+      Date: serverTimestamp(),
       Category: val.category,
       Text: val.text,
     });

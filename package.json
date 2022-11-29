@@ -21,6 +21,7 @@
     "framer-motion": "^7.6.7",
     "next": "13.0.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-quill": "^2.0.0"
   }
 }
