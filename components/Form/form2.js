@@ -3,10 +3,12 @@ import { Button, Checkbox, Form, Input, Select } from "antd";
 import { EditorState } from "draft-js";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../config/config";
-// import { Editor } from "react-draft-wysiwyg";
-// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import useWindowSize from "../../Hooks/useWindowSize";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const Form2 = () => {
+  const { width, height } = useWindowSize();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -31,9 +33,13 @@ const Form2 = () => {
     console.log("Failed:", errorInfo);
   };
 
+  console.log(width, "III");
+
   return (
     <Form
       style={{
+        width: width,
+        height: height,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -83,29 +89,30 @@ const Form2 = () => {
           // options={options}
         />
       </Form.Item>
-      {/*<Form.Item*/}
-      {/*  name="edit"*/}
-      {/*  wrapperCol={{*/}
-      {/*    offset: 4,*/}
-      {/*    span: 16,*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*  <div*/}
-      {/*    style={{*/}
-      {/*      border: "1px solid black",*/}
-      {/*      padding: "2px",*/}
-      {/*      minHeight: "400px",*/}
-      {/*    }}*/}
-      {/*  >*/}
-      {/*    <Editor*/}
-      {/*      editorState={editorState}*/}
-      {/*      onEditorStateChange={setEditorState}*/}
-      {/*    />*/}
-      {/*  </div>*/}
-      {/*</Form.Item>*/}
-      <Form.Item name="text" label="TextArea">
-        <TextArea rows={4} />
+      <Form.Item
+        name="edit"
+        wrapperCol={{
+          offset: 4,
+          span: 16,
+        }}
+      >
+        <div
+          style={{
+            border: "1px solid black",
+            padding: "2px",
+            minHeight: "400px",
+          }}
+        >
+          <Editor
+            style={{ width: window.innerWidth, height: "100px" }}
+            editorState={editorState}
+            onEditorStateChange={setEditorState}
+          />
+        </div>
       </Form.Item>
+      {/*<Form.Item name="text" label="TextArea">*/}
+      {/*  <TextArea rows={4} />*/}
+      {/*</Form.Item>*/}
       <Form.Item
         wrapperCol={{
           offset: 8,

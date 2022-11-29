@@ -13,10 +13,10 @@ const FormComp = () => {
   const addPost = async (val) => {
     const ref = collection(db, "Posts");
     await addDoc(ref, {
-      Title: val.title,
-      Date: serverTimestamp(),
-      Category: val.category,
-      Text: val.text,
+      title: val.title,
+      date: serverTimestamp(),
+      category: val.category,
+      text: val.text,
     });
   };
 
