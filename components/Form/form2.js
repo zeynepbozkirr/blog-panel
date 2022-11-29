@@ -1,15 +1,36 @@
-import React from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { Button, Checkbox, Form, Input, Select } from "antd";
+import { EditorState } from "draft-js";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../config/config";
+// import { Editor } from "react-draft-wysiwyg";
+// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
 const Form2 = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+  const { TextArea } = Input;
+
+  useEffect(() => {
+    console.log(editorState);
+  }, [editorState]);
+
+  const addPost = async (val) => {
+    const ref = collection(db, "Posts");
+    await addDoc(ref, {
+      Title: val.title,
+      Date: serverTimestamp(),
+      Category: val.category,
+      Text: val.text,
+    });
+    console.log("send");
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
+
   return (
     <Form
       style={{
@@ -25,12 +46,10 @@ const Form2 = () => {
       wrapperCol={{
         span: 10,
       }}
-      initialValues={{
-        remember: true,
+      initialValues={{ title: "", date: "", text: "", category: [] }}
+      onFinish={(values) => {
+        addPost(values);
       }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
     >
       <Form.Item
         label="Title"
@@ -44,7 +63,6 @@ const Form2 = () => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item
         label="Category"
         name="category"
@@ -61,22 +79,33 @@ const Form2 = () => {
             width: "100%",
           }}
           placeholder="Tags Mode"
-          onChange={handleChange}
+          // onChange={handleChange}
           // options={options}
         />
       </Form.Item>
-
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Checkbox>Remember me</Checkbox>
+      {/*<Form.Item*/}
+      {/*  name="edit"*/}
+      {/*  wrapperCol={{*/}
+      {/*    offset: 4,*/}
+      {/*    span: 16,*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <div*/}
+      {/*    style={{*/}
+      {/*      border: "1px solid black",*/}
+      {/*      padding: "2px",*/}
+      {/*      minHeight: "400px",*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    <Editor*/}
+      {/*      editorState={editorState}*/}
+      {/*      onEditorStateChange={setEditorState}*/}
+      {/*    />*/}
+      {/*  </div>*/}
+      {/*</Form.Item>*/}
+      <Form.Item name="text" label="TextArea">
+        <TextArea rows={4} />
       </Form.Item>
-
       <Form.Item
         wrapperCol={{
           offset: 8,

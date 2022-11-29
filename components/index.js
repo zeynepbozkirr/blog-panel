@@ -4,11 +4,14 @@ import FormComp from "./Form/Form";
 import { auth } from "../config/config";
 import Form2 from "./Form/form2";
 
+import "draft-js/dist/Draft.css";
+
 const BlogComponent = () => {
   const [user, setUser] = useState(() => {
     const user = auth.currentUser;
     return user;
   });
+
   useEffect(() => {
     auth.onAuthStateChanged((firebaseUser) => {
       setUser(firebaseUser);
