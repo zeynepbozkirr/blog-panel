@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Drawer, Button } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
-import styles from "./blog.module.css";
+import styles from "./blog/blog.module.css";
 import { auth } from "../config/config";
 import { signOut } from "firebase/auth";
 

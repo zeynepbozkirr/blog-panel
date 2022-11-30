@@ -1,39 +1,30 @@
-import React, { createRef, useEffect, useState } from "react";
-import { Button, Checkbox, Form, Input, Select } from "antd";
-import { EditorState } from "draft-js";
+import React, { useState } from "react";
+import { Button, Form, Input, Select } from "antd";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../../config/config";
-import useWindowSize from "../../Hooks/useWindowSize";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { db } from "../../../config/config";
+import useWindowSize from "../../../Hooks/useWindowSize";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-const Form2 = () => {
+const FormComp = () => {
   const { width, height } = useWindowSize();
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
-  const { TextArea } = Input;
-
-  useEffect(() => {
-    console.log(editorState);
-  }, [editorState]);
+  const [convertedText, setConvertedText] = useState("Some default content");
 
   const addPost = async (val) => {
-    const ref = collection(db, "Posts");
+    const ref = collection(db, "posts");
     await addDoc(ref, {
-      Title: val.title,
-      Date: serverTimestamp(),
-      Category: val.category,
-      Text: val.text,
+      title: val.title,
+      date: serverTimestamp(),
+      category: val.category,
+      postContent: val.content,
+      readCount: 0,
     });
-    console.log("send");
+    console.log("send", val.content.toString());
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
-  console.log(width, "III");
 
   return (
     <Form
@@ -47,7 +38,6 @@ const Form2 = () => {
       name="basic"
       labelCol={{
         span: 8,
-        // offset: 4,
       }}
       wrapperCol={{
         span: 10,
@@ -56,6 +46,8 @@ const Form2 = () => {
       onFinish={(values) => {
         addPost(values);
       }}
+      onFinishFailed={onFinishFailed}
+      requiredMark={false}
     >
       <Form.Item
         label="Title"
@@ -85,34 +77,23 @@ const Form2 = () => {
             width: "100%",
           }}
           placeholder="Tags Mode"
-          // onChange={handleChange}
           // options={options}
         />
       </Form.Item>
       <Form.Item
-        name="edit"
+        name="content"
         wrapperCol={{
           offset: 4,
           span: 16,
         }}
       >
-        <div
-          style={{
-            border: "1px solid black",
-            padding: "2px",
-            minHeight: "400px",
-          }}
-        >
-          <Editor
-            style={{ width: window.innerWidth, height: "100px" }}
-            editorState={editorState}
-            onEditorStateChange={setEditorState}
-          />
-        </div>
+        <ReactQuill
+          theme="snow"
+          value={convertedText}
+          onChange={setConvertedText}
+          style={{ minHeight: "300px" }}
+        />
       </Form.Item>
-      {/*<Form.Item name="text" label="TextArea">*/}
-      {/*  <TextArea rows={4} />*/}
-      {/*</Form.Item>*/}
       <Form.Item
         wrapperCol={{
           offset: 8,
@@ -126,4 +107,5 @@ const Form2 = () => {
     </Form>
   );
 };
-export default Form2;
+
+export default FormComp;

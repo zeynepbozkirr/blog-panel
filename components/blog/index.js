@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Authentication from "./Authentication ";
-import FormComp from "./Form/Form";
-import { auth } from "../config/config";
-import Form2 from "./Form/form2";
-
+import Authentication from "./authentication";
+import FormComp from "./form";
+import { auth } from "../../config/config";
 import "draft-js/dist/Draft.css";
 
 const BlogComponent = () => {
@@ -17,7 +15,7 @@ const BlogComponent = () => {
       setUser(firebaseUser);
     });
   }, []);
-  return <div>{user ? <Form2 /> : <Authentication />}</div>;
+  return <div>{user ? <FormComp /> : <Authentication />}</div>;
 };
 
 export default BlogComponent;
