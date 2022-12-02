@@ -5,21 +5,24 @@ import { db } from "../../../config/config";
 import useWindowSize from "../../../Hooks/useWindowSize";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import UploadPhoto from "./UploadPhoto";
 
 const FormComp = () => {
   const { width, height } = useWindowSize();
   const [convertedText, setConvertedText] = useState("Some default content");
+  const [fileList, setFileList] = useState([]);
+  const date = new Date();
 
   const addPost = async (val) => {
     const ref = collection(db, "posts");
     await addDoc(ref, {
       title: val.title,
-      date: serverTimestamp(),
+      date: date.toLocaleDateString(),
       category: val.category,
       postContent: val.content,
       readCount: 0,
     });
-    console.log("send", val.content.toString());
+    console.log("send", val, fileList);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -37,12 +40,17 @@ const FormComp = () => {
       }}
       name="basic"
       labelCol={{
-        span: 8,
+        span: 6,
       }}
       wrapperCol={{
         span: 10,
       }}
-      initialValues={{ title: "", date: "", text: "", category: [] }}
+      initialValues={{
+        title: "",
+        date: "",
+        text: "",
+        category: [],
+      }}
       onFinish={(values) => {
         addPost(values);
       }}
@@ -80,6 +88,7 @@ const FormComp = () => {
           // options={options}
         />
       </Form.Item>
+
       <Form.Item
         name="content"
         wrapperCol={{
