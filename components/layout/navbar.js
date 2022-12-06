@@ -15,6 +15,7 @@ const Navbar = () => {
       <Col>
         <Link href="/Posts">Posts</Link>
       </Col>
+
       <Col>
         <LogOut />
       </Col>

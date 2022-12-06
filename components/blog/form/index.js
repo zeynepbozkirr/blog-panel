@@ -1,27 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { Button, Form, Input, Select } from "antd";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../config/config";
 import useWindowSize from "../../../Hooks/useWindowSize";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import UploadPhoto from "./UploadPhoto";
+import { useCollection } from "../../../Hooks/useCollection";
 
-const FormComp = () => {
+const FormComp = ({ id, fillInputValue }) => {
+  const { documents: Posts } = useCollection("posts");
   const { width, height } = useWindowSize();
   const [convertedText, setConvertedText] = useState("Some default content");
   const [fileList, setFileList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  // const [fillInputValue, setFillInputVal] = useState([]);
+
+  const [form] = Form.useForm();
+  const formRef = createRef();
+
   const date = new Date();
 
-  const addPost = async (val) => {
-    const ref = collection(db, "posts");
-    await addDoc(ref, {
-      title: val.title,
+  const filterFillInputVal = (id) => {
+    const fillinput = Posts?.find((x) => x.id === id);
+
+    form.setFieldsValue({
+      title: fillinput?.title,
       date: date.toLocaleDateString(),
-      category: val.category,
-      postContent: val.content,
+      category: fillinput?.category,
+      text: fillinput?.postContent,
+
       readCount: 0,
     });
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (id && Posts) {
+      filterFillInputVal(id);
+    }
+  }, [id, Posts]);
+
+  const addPost = async (val) => {
+    formRef.current.resetFields();
+    if (id) {
+      const ref = doc(db, "posts", id);
+
+      await updateDoc(ref, {
+        title: val.title,
+        date: date.toLocaleDateString(),
+        category: val.category,
+        postContent: val.content,
+        readCount: 0,
+      });
+    } else {
+      const ref = collection(db, "posts");
+      await addDoc(ref, {
+        title: val.title,
+        date: date.toLocaleDateString(),
+        category: val.category,
+        postContent: val.content,
+        readCount: 0,
+      });
+    }
+
     console.log("send", val, fileList);
   };
 
@@ -29,8 +70,12 @@ const FormComp = () => {
     console.log("Failed:", errorInfo);
   };
 
-  return (
+  return loading ? (
+    <div>asd</div>
+  ) : (
     <Form
+      ref={formRef}
+      form={form}
       style={{
         width: width,
         height: height,
