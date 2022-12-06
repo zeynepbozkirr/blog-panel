@@ -12,7 +12,7 @@ const FormComp = ({ id, fillInputValue }) => {
   const { width, height } = useWindowSize();
   const [convertedText, setConvertedText] = useState("Some default content");
   const [fileList, setFileList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   // const [fillInputValue, setFillInputVal] = useState([]);
 
   const [form] = Form.useForm();
@@ -27,11 +27,10 @@ const FormComp = ({ id, fillInputValue }) => {
       title: fillinput?.title,
       date: date.toLocaleDateString(),
       category: fillinput?.category,
-      text: fillinput?.postContent,
-
+      content: fillinput?.postContent,
       readCount: 0,
     });
-    setLoading(false);
+    // setLoading(false);
   };
 
   useEffect(() => {
@@ -41,10 +40,8 @@ const FormComp = ({ id, fillInputValue }) => {
   }, [id, Posts]);
 
   const addPost = async (val) => {
-    formRef.current.resetFields();
     if (id) {
       const ref = doc(db, "posts", id);
-
       await updateDoc(ref, {
         title: val.title,
         date: date.toLocaleDateString(),
@@ -53,6 +50,7 @@ const FormComp = ({ id, fillInputValue }) => {
         readCount: 0,
       });
     } else {
+      console.log("eeeee");
       const ref = collection(db, "posts");
       await addDoc(ref, {
         title: val.title,
@@ -62,8 +60,8 @@ const FormComp = ({ id, fillInputValue }) => {
         readCount: 0,
       });
     }
-
     console.log("send", val, fileList);
+    formRef.current.resetFields();
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -93,7 +91,7 @@ const FormComp = ({ id, fillInputValue }) => {
       initialValues={{
         title: "",
         date: "",
-        text: "",
+        content: "",
         category: [],
       }}
       onFinish={(values) => {

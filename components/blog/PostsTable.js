@@ -15,7 +15,7 @@ const PostTable = () => {
   };
   return (
     <div>
-      <Link href={`/Posts/${null}`}>
+      <Link href="/Posts">
         <Button onClick={() => <FormComp />}>ADD</Button>
       </Link>
       <Table dataSource={Posts}>
