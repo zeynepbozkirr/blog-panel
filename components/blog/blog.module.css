@@ -1,23 +1,23 @@
-/*.formContainer{*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: end;*/
-/*    margin-top: 80px;*/
+.formContainer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    margin-top: 80px;
 
 
-/*}*/
-/*.Form{*/
-/*    border: solid 1px;*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    width: 300px;*/
-/*}*/
+}
+.Form{
+    border: solid 1px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
 
-/*.formLogoutButton{*/
-/*    display: flex;*/
-/*    justify-content: end;*/
-/*    align-items: end;*/
+.formLogoutButton{
+    display: flex;
+    justify-content: end;
+    align-items: end;
 
-/*}*/
+}
