@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Form, Input, Select } from "antd";
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../../../config/config";
 import useWindowSize from "../../../Hooks/useWindowSize";
 import ReactQuill from "react-quill";
@@ -26,10 +32,8 @@ const FormComp = ({ id, fillInputValue }) => {
 
     form.setFieldsValue({
       title: fillinput?.title,
-      date: date.toLocaleDateString(),
       category: fillinput?.category,
       content: fillinput?.postContent,
-      readCount: 0,
     });
     // setLoading(false);
   };
@@ -45,7 +49,7 @@ const FormComp = ({ id, fillInputValue }) => {
       const ref = doc(db, "posts", id);
       await updateDoc(ref, {
         title: val.title,
-        date: date.toLocaleDateString(),
+        date: date.toDateString(),
         category: val.category,
         postContent: val.content,
         readCount: 0,
@@ -55,7 +59,7 @@ const FormComp = ({ id, fillInputValue }) => {
       const ref = collection(db, "posts");
       await addDoc(ref, {
         title: val.title,
-        date: date.toLocaleDateString(),
+        date: date.toDateString(),
         category: val.category,
         postContent: val.content,
         readCount: 0,
