@@ -1,10 +1,15 @@
 import React, { useState } from "react";
-import { Button, Popconfirm, Space, Table, Tag } from "antd";
+import { Button, Col, Popconfirm, Space, Table, Tag } from "antd";
 import { useCollection } from "../../Hooks/useCollection";
 import Link from "next/link";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../config/config";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  BorderInnerOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import dynamic from "next/dynamic";
 const FormComp = dynamic(() => import("./form"), {
   ssr: false,
@@ -26,9 +31,14 @@ const PostTable = () => {
   };
   return (
     <div>
-      <Link href="/Posts">
-        <Button onClick={() => <FormComp />}>ADD</Button>
-      </Link>
+      <Col offset={20}>
+        <Link href="/Posts">
+          <PlusOutlined
+            style={{ fontSize: "24px", margin: "6px" }}
+            onClick={() => <FormComp />}
+          />
+        </Link>
+      </Col>
       <Table dataSource={Posts}>
         <Column title="Title" dataIndex="title" key="title" />
         <Column title="Date" dataIndex="date" key="date" />

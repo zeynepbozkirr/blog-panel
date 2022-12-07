@@ -6,17 +6,34 @@ import LogOut from "../blog/authentication/Logout";
 const Navbar = () => {
   return (
     <Row
-      justify="space-between"
-      style={{ background: "#D9D9D9", height: "50px" }}
+      // justify="space-around"
+      style={{ background: "#D9D9D9", height: "50px", marginTop: "2px" }}
     >
-      <Col>
-        <Link href="/">Home</Link>
-      </Col>
-      <Col>
-        <Link href="/Posts">Posts</Link>
+      <Col
+        // justify="center"
+        span={4}
+        offset={4}
+        style={{
+          display: "flex",
+          // justifyContent: "center",
+          alignItems: "center",
+          color: "#BD3A2A",
+          fontFamily: " Source Sans Pro, sans-serif ",
+          fontSize: "20px",
+        }}
+      >
+        <Link href="/">HOME</Link>
       </Col>
 
-      <Col>
+      <Col
+        span={6}
+        offset={8}
+        style={{
+          display: "flex",
+          justifyContent: "end",
+          alignItems: "center",
+        }}
+      >
         <LogOut />
       </Col>
     </Row>
