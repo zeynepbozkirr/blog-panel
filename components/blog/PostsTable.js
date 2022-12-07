@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Button, Popconfirm, Space, Table, Tag } from "antd";
 import { useCollection } from "../../Hooks/useCollection";
-import FormComp from "./form";
 import Link from "next/link";
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../config/config";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-
+import dynamic from "next/dynamic";
+const FormComp = dynamic(() => import("./form"), {
+  ssr: false,
+});
 const { Column } = Table;
 
 const PostTable = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button, Form, Input, Select } from "antd";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../config/config";
@@ -10,13 +10,14 @@ import { useCollection } from "../../../Hooks/useCollection";
 const FormComp = ({ id, fillInputValue }) => {
   const { documents: Posts } = useCollection("posts");
   const { width, height } = useWindowSize();
+
   const [convertedText, setConvertedText] = useState("Some default content");
   const [fileList, setFileList] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const [fillInputValue, setFillInputVal] = useState([]);
 
   const [form] = Form.useForm();
-  const formRef = createRef();
+  const formRef = useRef();
+  console.log(form, "formref", formRef);
 
   const date = new Date();
 
@@ -60,7 +61,7 @@ const FormComp = ({ id, fillInputValue }) => {
         readCount: 0,
       });
     }
-    console.log("send", val, fileList);
+    console.log("send", val, fileList, formRef);
     formRef.current.resetFields();
   };
 
@@ -72,8 +73,6 @@ const FormComp = ({ id, fillInputValue }) => {
     <div>asd</div>
   ) : (
     <Form
-      ref={formRef}
-      form={form}
       style={{
         width: width,
         height: height,
@@ -91,6 +90,8 @@ const FormComp = ({ id, fillInputValue }) => {
       onFinish={addPost}
       onFinishFailed={onFinishFailed}
       requiredMark={false}
+      ref={formRef}
+      form={form}
     >
       <Form.Item
         label="Title"
