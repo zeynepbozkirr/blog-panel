@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { Button, Space, Table, Tag } from "antd";
+import { Button, Popconfirm, Space, Table, Tag } from "antd";
 import { useCollection } from "../../Hooks/useCollection";
 import FormComp from "./form";
 import Link from "next/link";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "../../config/config";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+
 const { Column } = Table;
 
 const PostTable = () => {
@@ -12,6 +16,11 @@ const PostTable = () => {
   const InputFill = async (id) => {
     const filterFillInputVal = Posts?.find((x) => x.id === id);
     await setFillInputVal(filterFillInputVal);
+  };
+
+  const deletePost = async (id) => {
+    const ref = doc(db, "posts", id);
+    await deleteDoc(ref);
   };
   return (
     <div>
@@ -30,20 +39,28 @@ const PostTable = () => {
           render={(_, record) => (
             <Space size="middle">
               <Link href={`/Posts/${record.id}`}>
-                <Button
+                <EditOutlined
                   onClick={() => {
                     InputFill(record.id);
                   }}
-                >
-                  Edit
-                </Button>
+                />
               </Link>
-
-              <Link href="/Posts">
-                <Button onClick={() => console.log("dd", record.id)}>
-                  Delete
-                </Button>
-              </Link>
+              <Popconfirm
+                placement="top"
+                onConfirm={() => deletePost(record.id)}
+                okText={"Yes"}
+                cancelText={"No"}
+                icon={null}
+                okType={"danger"}
+                // overlayInnerStyle={{
+                //   // height: "50px",
+                //   background: "rgba(255, 222, 222, 0.4)",
+                //   borderRadius: "10px",
+                //   paddingBottom: "10px",
+                // }}
+              >
+                <DeleteOutlined />
+              </Popconfirm>
             </Space>
           )}
         />

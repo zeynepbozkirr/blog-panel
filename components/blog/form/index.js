@@ -88,15 +88,7 @@ const FormComp = ({ id, fillInputValue }) => {
       wrapperCol={{
         span: 10,
       }}
-      initialValues={{
-        title: "",
-        date: "",
-        content: "",
-        category: [],
-      }}
-      onFinish={(values) => {
-        addPost(values);
-      }}
+      onFinish={addPost}
       onFinishFailed={onFinishFailed}
       requiredMark={false}
     >
