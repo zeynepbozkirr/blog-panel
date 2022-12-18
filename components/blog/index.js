@@ -8,8 +8,9 @@ import PostsTable from "./PostsTable";
 const BlogComponent = () => {
   const [user, setUser] = useState(() => {
     const user = auth.currentUser;
+    console.log(auth, "uss");
     return user;
-  });
+  }, [user]);
 
   useEffect(() => {
     auth.onAuthStateChanged((firebaseUser) => {

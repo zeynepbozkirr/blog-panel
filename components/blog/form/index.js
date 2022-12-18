@@ -26,6 +26,7 @@ const FormComp = ({ id, fillInputValue }) => {
   console.log(form, "formref", formRef);
 
   const date = new Date();
+  console.log(date, "date");
 
   const filterFillInputVal = (id) => {
     const fillinput = Posts?.find((x) => x.id === id);
@@ -49,7 +50,7 @@ const FormComp = ({ id, fillInputValue }) => {
       const ref = doc(db, "posts", id);
       await updateDoc(ref, {
         title: val.title,
-        date: date.toDateString(),
+        date: date.toLocaleDateString(),
         category: val.category,
         postContent: val.content,
         readCount: 0,
@@ -59,7 +60,7 @@ const FormComp = ({ id, fillInputValue }) => {
       const ref = collection(db, "posts");
       await addDoc(ref, {
         title: val.title,
-        date: date.toDateString(),
+        date: date.toLocaleDateString(),
         category: val.category,
         postContent: val.content,
         readCount: 0,
